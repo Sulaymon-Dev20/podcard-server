@@ -32,12 +32,17 @@ public class FileUploadController {
                 .body(resource);
     }
 
-    @SneakyThrows
     @PostMapping("/upload")
     public HttpEntity<?> uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
+        String s = this.saveFile(file);
+        return ResponseEntity.ok(s);
+    }
+
+    @SneakyThrows
+    public String saveFile(MultipartFile file) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Path pathf = Paths.get(path + fileName);
         Files.copy(file.getInputStream(), pathf, StandardCopyOption.REPLACE_EXISTING);
-        return ResponseEntity.ok("asd");
+        return file.getName();
     }
 }
