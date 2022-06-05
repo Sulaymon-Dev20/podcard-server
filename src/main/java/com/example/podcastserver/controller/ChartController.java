@@ -54,9 +54,9 @@ public class ChartController {
         return this.service.findByFeedbackId(id, ray);
     }
 
-    @PutMapping
-    public Response commentChart(@RequestBody CommentChart commentChart) {
-        return this.service.commentChart(commentChart);
+    @PutMapping("/{id}")
+    public Response commentChart(@RequestBody CommentChart commentChart, @PathVariable String id) {
+        return this.service.commentChart(commentChart, id);
     }
 
     @DeleteMapping("/{id}")

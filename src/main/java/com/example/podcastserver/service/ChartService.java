@@ -73,13 +73,13 @@ public class ChartService {
         }).sorted());
     }
 
-    public Response commentChart(CommentChart commentChart) {
-        return new Response(new Status(200), jdbcTemplate.queryForList("select * from charts").stream().peek(item -> {
-            item.put("episodes", new JSONArray((String) item.get("episodes")).toList());
-            item.put("comments", new JSONArray((String) item.get("comments")).toList());
-            item.put("feedback", new JSONArray((String) item.get("feedback")).toList());
-            item.put("band_count", new JSONArray((String) item.get("band_count")).toList());
-        }).sorted());
+    @SneakyThrows
+    public Response commentChart(CommentChart commentChart, String id) {
+        Map<String, Object> map = jdbcTemplate.queryForMap("select * from charts where id=" + id);
+        List<Object> objects = new JSONArray((String) map.get("comments")).toList();
+        objects.add(Map.of("charId", commentChart.getCharId(), "message", commentChart.getMessage()));
+        jdbcTemplate.update("update charts set comments=? where id=" + id, new ObjectMapper().writeValueAsString(objects));
+        return new Response(new Status(200));
     }
 
     public Response banChart(String chartId, String message) {
