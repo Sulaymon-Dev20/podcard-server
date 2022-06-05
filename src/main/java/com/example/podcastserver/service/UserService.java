@@ -48,4 +48,13 @@ public class UserService {
         jdbcTemplate.update("update users set fellows=? where id=? returning *", json, 1);
         return null;
     }
+
+    public Response sendMe() {
+        Map<String, Object> user = jdbcTemplate.queryForMap("select * from users limit 1");
+        user.put("saved", new JSONArray((String) user.get("saved")).toList());
+        user.put("downloads", new JSONArray((String) user.get("downloads")).toList());
+        user.put("fellows", new JSONArray((String) user.get("fellows")).toList());
+        user.put("history", new JSONArray((String) user.get("history")).toList());
+        return new Response(new Status(200), user);
+    }
 }

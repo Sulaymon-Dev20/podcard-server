@@ -26,6 +26,11 @@ public class UserController {
         return !error.hasErrors() ? this.service.update(user) : new Response(new Status(400, "Bed request"), error.getFieldErrors().stream().map(fieldError -> new ErrorsField(fieldError.getField(), fieldError.getDefaultMessage())).collect(Collectors.toList()));
     }
 
+    @PostMapping("/me")
+    public Response sendMe() {
+        return this.service.sendMe();
+    }
+
     @PostMapping("/fallow/{chartId}")
     public Response fallow(@PathVariable Long chartId) {
         return this.service.fallow(chartId);

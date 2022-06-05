@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/chart")
+@RequestMapping("/api/playList")
 public class ChartController {
     final ChartService service;
 

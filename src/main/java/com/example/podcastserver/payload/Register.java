@@ -22,11 +22,11 @@ public class Register {
     @Length(min = 8)
     private String password;
 
-    @NotNull(message = "file not be null")
+//    @NotNull(message = "file not be null")
     private MultipartFile image;
 
     @Override
     public String toString() {
-        return "insert into users (username, mail, password, img_id) VALUES ('" + this.username + "','" + this.email + "','" + this.password + "','" + image.getOriginalFilename() + "') returning *";
+        return "insert into users (username, mail, password) VALUES ('" + this.username + "','" + this.email + "','" + this.password + "') returning *";
     }
 }

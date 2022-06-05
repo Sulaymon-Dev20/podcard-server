@@ -22,7 +22,7 @@ public class User {
     @Length(min = 8)
     private String password;
 
-    @NotNull(message = "file not be null")
+//    @NotNull(message = "file not be null")
     private MultipartFile image;
 
 /*    @Override

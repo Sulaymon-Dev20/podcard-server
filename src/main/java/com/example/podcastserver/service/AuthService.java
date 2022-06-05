@@ -24,14 +24,18 @@ public class AuthService {
     }
 
     public HttpEntity<?> register(Register register) {
-        fileService.saveFile(register.getImage());
-        List<Map<String, Object>> maps = jdbcTemplate.queryForList(register.toString());
-        return ResponseEntity.ok(new Response(new Status(200, "ok"), maps.get(0)));
+//        fileService.saveFile(register.getImage());
+        Map<String, Object> maps = jdbcTemplate.queryForMap(register.toString());
+        maps.remove("saved");
+        maps.remove("downloads");
+        maps.remove("fellows");
+        maps.remove("history");
+        return ResponseEntity.ok(new Response(new Status(200, "ok"), Map.of("token","Bearer YXNmZGFzIGZhc2RmIGFzZiBzYWYgYXNmIFN1bGF5bW9uIFlhaHlvIG5pbWEgZ3BhbGEgYm92b3R0aW1pIG5pbWEgcWl2b3NzaXog")));
     }
 
     public HttpEntity<?> login(Login login) {
-        List<Map<String, Object>> users = jdbcTemplate.queryForList(login.toString());
-        return ResponseEntity.ok(new Response(new Status(users.isEmpty() ? 403 : 200), users.isEmpty() ? null : users.get(0)));
+        List<Map<String, Object>> users = jdbcTemplate.queryForList("select * from users where username='" + login.getUsername() + "' and password='" + login.getPassword() + "'");
+        return ResponseEntity.ok(new Response(new Status(users.isEmpty() ? 403 : 200), Map.of("token", !users.isEmpty() ? "Bearer YXNmZGFzIGZhc2RmIGFzZiBzYWYgYXNmIFN1bGF5bW9uIFlhaHlvIG5pbWEgZ3BhbGEgYm92b3R0aW1pIG5pbWEgcWl2b3NzaXog" : null)));
     }
 
     public HttpEntity<?> forgetPassword(String username) {
@@ -40,9 +44,10 @@ public class AuthService {
 
     public Response checkUsername(String username) {
         if (username.length() > 5) {
-            return new Response(new Status(200, jdbcTemplate.queryForList("select * from users u where u.username=?", username).isEmpty() ? "this is free" : "this username is alrealy used"));
+            boolean empty = jdbcTemplate.queryForList("select * from users u where u.username=?", username).isEmpty();
+            return new Response(new Status(200), Map.of("free", !empty, "message", "okokok"));
         } else {
-            return new Response(new Status(200, "this username is alrealy used"));
+            return new Response(new Status(200), Map.of("free", false, "message", "this username is alrealy used"));
         }
     }
 }

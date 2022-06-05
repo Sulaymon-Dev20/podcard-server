@@ -34,7 +34,7 @@ public class SpringFoxConfig {
                 .groupName("For Web Front")
                 .select()
 //                .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.example.podcastserver"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.podcastserver.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .ignoredParameterTypes(classes)

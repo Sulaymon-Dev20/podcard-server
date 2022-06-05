@@ -15,6 +15,6 @@ public class Login {
 
     @Override
     public String toString() {
-        return "select * from users u where u.username=" + this.username + " and password=" + this.password;
+        return "select * from users u where username=" + this.username + " and password=" + this.password;
     }
 }
